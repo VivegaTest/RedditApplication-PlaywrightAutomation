@@ -4,10 +4,10 @@ export default defineConfig({
 
     testDir: './tests',
     fullyParallel: true,
-    retries: process.env.CI ? 1 : 0,
+    retries: process.env.CI ? 0 : 0,
     reporter: [['html', { open: "always" }]],
     use: {
-        headless: true,
+        headless: false,
         screenshot: "on",
         video: "on"
     },
