@@ -2,7 +2,7 @@ import{BrowserContext,Page, expect,Locator, selectors}  from "@playwright/test";
 import { randomBytes } from 'crypto';
 import {test} from '../CustomFixtures/RedditFixtures';
 import {RegisterStep} from '../Enum/RegisterStep';
-import {Selectors} from "../Selectors/RegisterPageSelectors";
+import {Selectors} from "../Selectors/Selectors";
 
 
 test('Register a new Account', async ({RegisterNewAccount,RedditHomePage}) => {

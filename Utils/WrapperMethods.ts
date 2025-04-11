@@ -1,8 +1,7 @@
 import {Page, BrowserContext, test, expect, Locator} from '@playwright/test';
 import { randomBytes } from 'crypto';
-import {Selectors} from "../Selectors/RegisterPageSelectors";
+import {Selectors} from "../Selectors/Selectors";
 
-type SelectorType = 'locator' | 'text' | 'role' | 'hasText' | 'button';
 
 export abstract class Wrapper{
     readonly page: Page;
@@ -36,37 +35,37 @@ export abstract class Wrapper{
     }
 
 
-    public async fetchSelector(selector: string, selectorType: SelectorType): Promise<Locator> {
-        let element: Locator;
-        this.handleCookies();
-        this.handleAlert();
-      //  const button = null;
+    // public async fetchSelector(selector: string, selectorType: SelectorType): Promise<Locator> {
+    //     let element: Locator;
+    //     this.handleCookies();
+    //     this.handleAlert();
+    //   //  const button = null;
     
-        switch (selectorType) {
-          case 'locator':
-            element = this.page.locator(selector);
-            break;
+    //     switch (selectorType) {
+    //       case 'locator':
+    //         element = this.page.locator(selector);
+    //         break;
     
-          case 'text':
-            element = this.page.getByText(selector);
-            break;
+    //       case 'text':
+    //         element = this.page.getByText(selector);
+    //         break;
     
-          case 'role':
-            element = this.page.getByRole('textbox', { name: selector });
-            break;  
+    //       case 'role':
+    //         element = this.page.getByRole('textbox', { name: selector });
+    //         break;  
             
-          case 'button':
-            element = this.page.getByRole('button', { name: selector });
-            break;  
+    //       case 'button':
+    //         element = this.page.getByRole('button', { name: selector });
+    //         break;  
    
-          default:
-            throw new Error('Unsupported selector type');
-        }
+    //       default:
+    //         throw new Error('Unsupported selector type');
+    //     }
     
         // this.waitForElement(selector);
-        this.validateElementVisibility(element);  
-        return element; 
-      }
+    //     this.validateElementVisibility(element);  
+    //     return element; 
+    //   }
 
     async click(locator:string){
         try{
@@ -78,11 +77,11 @@ export abstract class Wrapper{
         }     
     }
 
-    async type(ele:string,testData:string){ 
-        this.waitForElement(ele);      
-        await this.page.locator(ele).fill('');
-        await this.page.fill(ele,testData);
-    }
+    // async type(ele:string,testData:string){ 
+    //     this.waitForElement(ele);      
+    //     await this.page.locator(ele).fill('');
+    //     await this.page.fill(ele,testData);
+    // }
 
     async typeAndEnter(locator:string, testData:string){
         this.waitForElement(locator);
