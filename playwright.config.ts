@@ -1,20 +1,20 @@
-import {defineConfig, devices} from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
 
     testDir: './tests',
-    fullyParallel:true,
-    retries: process.env.CI ? 1:0,
-    reporter:[['html', {open:"always"}]],
-    use:{
-        headless:true,
-        screenshot:"on",
-        video:"on"
+    fullyParallel: true,
+    retries: process.env.CI ? 1 : 0,
+    reporter: [['html', { open: "always" }]],
+    use: {
+        headless: true,
+        screenshot: "on",
+        video: "on"
     },
-    projects:[
+    projects: [
         {
-            name:'chromium',
-            use:{...devices['Desktop Chrome']}
+            name: 'chromium',
+            use: { ...devices['Desktop Chrome'] }
         },
         // {
         //     name:'firefox',
