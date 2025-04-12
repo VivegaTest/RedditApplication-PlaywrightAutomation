@@ -119,11 +119,12 @@ export class RegisterAccount extends Wrapper {
     public async selectOption(quest: string, option: string) {
         switch (quest) {
             case "How do you identify?":
-                console.log(" await this.page.getByRole('button', { name: `${option}` }):" + await this.page.getByRole('button', { name: `${option}` }));
+                await this.page.waitForLoadState();
                 await this.page.getByRole('button', { name: `${option}` }).click();
                 break;
 
             case "special_popular":
+                await this.page.waitForLoadState();
                 const select_Interest = this.page.locator(Selectors.selectInterest.replace("{0}", quest));
                 console.log("select_Interest :" + select_Interest);
                 const button = await select_Interest.locator('button', { hasText: `${option}` });
