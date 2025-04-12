@@ -75,4 +75,8 @@ You can find the details - ../constants/APIcredentials.ts
 ../utils/
     Call the common methods to utilize in Page class
 
+
+## Test Results: 
+![alt text](image.png)    
+
     
