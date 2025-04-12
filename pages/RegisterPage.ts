@@ -100,10 +100,15 @@ export class RegisterAccount extends Wrapper{
              break;
            
          case "special_popular":
+            // //   const select_Interest = await page.locator('shreddit-slotter >> #topics [data-section-name="_special_popular"]>div:nth-child(2)');
+// //   const button = await select_Interest.locator('button', { hasText: 'Am I the A**hole' });
+// //   console.log(await button.textContent());
+// //   await button.click();
+// //   await expect(button).toBeChecked();
             const select_Interest = this.page.locator(Selectors.selectInterest.replace("{0}",quest));
             console.log("select_Interest :"+ select_Interest);
             const button = await select_Interest.locator('button', { hasText: `${option}` });
-            console.log(await button.textContent()); 
+            console.log(await button.textContent());  
             await button.click();
             break;
 

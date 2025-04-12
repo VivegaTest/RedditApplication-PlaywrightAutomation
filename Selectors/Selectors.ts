@@ -1,11 +1,11 @@
-export class Selectors{
+export class Selectors {
 
     static userEmailInput = "input[name='email']";
     static userNameTextboxRole = { role: 'textbox', name: 'Username *' };
     static passwordTextboxRole = { role: 'textbox', name: 'Password *' };
-    static continueButton = "auth-flow-modal .continue"; 
+    static continueButton = "auth-flow-modal .continue";
     static signUp = 'text=Sign Up';
-    static submitButton = 'div > faceplate-tracker > button[type="submit"]';     
+    static submitButton = 'div > faceplate-tracker > button[type="submit"]';
     static shadowRoot = ">> label>div>span>span:nth-child(3) [icon-name='checkmark-fill']";
     static registerEmailCheckMark = "faceplate-text-input#register-email" + Selectors.shadowRoot;
     static emailFieldHelpText = "faceplate-text-input#register-email >> faceplate-form-helper-text >>#helper-text";
@@ -21,8 +21,8 @@ export class Selectors{
     static handleBannerAfterFirstClickContinueButton = 'alert-controller >> banner-controller >> faceplate-banner >>#banner-text';
 
 
-    
-    
+
+
 
     // Login Page
     static textInputField = "input[name='{0}']";
@@ -38,7 +38,8 @@ export class Selectors{
 
 
     //HomePage
-    static userProfileIcon = "#expand-user-drawer-button";
+    static userProfileIcon = "img[alt='User Avatar']";
     static userNameOnProfile = "#user-drawer-content >ul [noun='profile'] .text-secondary-weak";
     static communityHeader = "#subgrid-container .masthead .flex >div .flex-col >h1";
+    static joinCommunityStatus = "#subgrid-container .masthead .flex >div shreddit-subreddit-header-buttons >> faceplate-tracker shreddit-join-button >> button";
 }

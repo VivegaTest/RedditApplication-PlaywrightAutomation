@@ -35,5 +35,5 @@ test('Register a new Account', async ({ RegisterNewAccount, RedditHomePage }) =>
     await RegisterNewAccount.selectOption("How do you identify?", "Woman");
     await RegisterNewAccount.selectOption("special_popular", "United Kingdom");
     await RegisterNewAccount.clickContinueButton(Selectors.submitRegister);
-    await RedditHomePage.verifyUserLoggedIntoRedditApplication();
+    await RedditHomePage.verifyUserLoggedIntoRedditApplication(user);
 })
