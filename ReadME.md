@@ -1,4 +1,4 @@
-# Reddit Playwright TypeScript Automation
+# Playwright TypeScript Page Object Model Framework
 
 
 ## Table of Contents
@@ -7,8 +7,7 @@
 3. [Setup Instructions](#setup-instructions)
 4. [Usage](#usage)
 5. [Code Explanation](#code-explanation)
-6. [Contributing](#contributing)
-7. [License](#license)
+
 
 ## Project Description
 This project aims to automate the proces on a Reddit website. 
@@ -22,12 +21,12 @@ This project aims to automate the proces on a Reddit website.
 - **TypeScript** - Programming language used for development.
 - **Playwright** - Automation library for web testing and browser interactions.
 - **Node.js** - JavaScript runtime used to execute the code.
-- **Jest** or **Mocha** (Optional) - For writing and running test cases (if applicable).
 
 ## Setup Instructions
 
 ### Prerequisites
 - Node.js (version 16.x or higher)
+- Npm install
 
 ### Installation
 
@@ -38,15 +37,38 @@ This project aims to automate the proces on a Reddit website.
 
 2. Navigate to the project folder:
     ```bash
-    cd 
+    cd ..folder path
     ```
 
 3. Install dependencies:
     ```bash
-    npm install  
+    npm install playwright
+    npm install @playwright/test
+    npx playwright install
+    npm install @zerostep/playwright
     ```
 
-4. (Optional) If you want to run tests, you might need to install additional testing libraries:
-    ```bash
-    npm install --save-dev playwright
-    ```
+### Usage
+**HandleAPI.spec.ts** -  I created pref/apps using 'script' and generated the credentials. 
+You can find the details - ../constants/APIcredentials.ts
+
+### Code Explanation
+
+../constants/
+    Contains credentials, URL details, and other configuration constants used throughout the project.
+
+../CustomFixtures/RedditFixture.ts
+    Defines custom Playwright fixtures to centralize common setup steps such as user login, reducing code duplication across tests.
+
+../Enum/
+    Contains TypeScript enums that are used inside page objects and test flows to manage form navigation steps and validation
+
+../pages/
+    Contains class for each pages to handle easily
+
+../Selectors/
+  Contains locators to easy to handle
+
+../tests/
+    Contains the test class
+    

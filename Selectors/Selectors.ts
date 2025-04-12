@@ -21,16 +21,13 @@ export class Selectors {
     static handleBannerAfterFirstClickContinueButton = 'alert-controller >> banner-controller >> faceplate-banner >>#banner-text';
 
 
-
-
-
     // Login Page
     static textInputField = "input[name='{0}']";
     static loginUserNameCheckMark = "faceplate-text-input#login-username" + Selectors.shadowRoot;
     static loginPasswordCheckMark = "faceplate-text-input#login-password" + Selectors.shadowRoot;
     static LoginButton = { role: 'button', name: 'Log In' };
     static filterOption = "shreddit-sort-dropdown >> faceplate-dropdown-menu > faceplate-tooltip > faceplate-tracker > button";
-    static topPost = "#subgrid-container .main-container shreddit-feed >article:nth-child({0}) [slot='title']";
+    static topPost = "#subgrid-container .main-container shreddit-feed >article:nth-child(1) [slot='title']";
     static topPostHref = "shreddit-feed > article:nth-child(1) [slot='title']";
     static openedPostTitle = "shreddit-post >h1";
     static pageLoad = "#main-content:nth-child(1)";

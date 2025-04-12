@@ -2,17 +2,15 @@ import { BrowserContext, expect, Locator, Page } from "@playwright/test";
 import { URLConstants } from '../constants/URLConstants';
 import { Wrapper } from "../Utils/WrapperMethods";
 import { Selectors } from "../Selectors/Selectors";
-import { credentialConstants } from "../constants/credentialConstants";
 
 export class LoginPage extends Wrapper {
   static url = URLConstants.BaseURL;
   static homeUrl = URLConstants.HomeURL;
-  private selectedPostTitle: string = '';
 
-  constructor(page: Page, context: BrowserContext) {
-    super(page, context);
-  }
-
+  /** Navigate to the login page by clicking url and handle any exception
+   * @param url
+   *  login url
+   */
   public async userNaviagtesToLoginPage(url: string) {
     await this.loadApp(url);
     await this.hanldeCaptcha();
@@ -20,17 +18,24 @@ export class LoginPage extends Wrapper {
     await this.handleAlert();
   }
 
+  /**
+   * Steps to fill data on login page
+   * @param username - enter valid username
+   * @param password  - enter valid password
+   */
   public async fillData(username: string, password: string) {
     await this.typeAndEnter(Selectors.textInputField.replace("{0}", "username"), username);
     await this.typeAndEnter(Selectors.textInputField.replace("{0}", "password"), password);
   }
 
+  /**
+   * steps to click on Login Button and handle any exception
+   */
   public async ClickOnLoginButton() {
     const loginButton = await this.page.getByRole('button', { name: 'Log In' });
     await loginButton.waitFor({ state: 'visible', timeout: 60000 });
     await expect(loginButton).toBeEnabled();
     await this.page.waitForLoadState();
-
     await loginButton.click();
     const banner = await this.page.locator(Selectors.handleBannerAfterFirstClickContinueButton);
     if (await loginButton.isVisible()) {
@@ -45,6 +50,10 @@ export class LoginPage extends Wrapper {
     }
   }
 
+  /**
+   * Steps to waits for expected url to load
+   * @param expectedUrl - enter url to load
+   */
   public async waitForPageLoad(expectedUrl: string): Promise<void> {
     try {
       await this.page.waitForURL((url) => url.toString().includes(expectedUrl), { timeout: 10000 });
@@ -54,9 +63,5 @@ export class LoginPage extends Wrapper {
       console.error(`Failed to load URL: ${expectedUrl}, actual: ${this.page.url()}`);
       throw error;
     }
-  }
-
-  public async verifyValidDataEnteredCheckMark(selector: string, action: 'visible' | 'disabled') {
-    await this.verifyElementStatus(selector, action);
   }
 }

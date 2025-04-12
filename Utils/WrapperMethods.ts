@@ -1,16 +1,20 @@
 import { Page, BrowserContext, test, expect, Locator } from '@playwright/test';
 import { randomBytes } from 'crypto';
 import { Selectors } from "../Selectors/Selectors";
+import { URLConstants } from '../constants/URLConstants';
+import { LOADIPHLPAPI } from "dns";
 
 
 export abstract class Wrapper {
     readonly page: Page;
     readonly context: BrowserContext;
+    readonly accessToken: string;
 
 
-    constructor(page: Page, context: BrowserContext) {
+    constructor(page: Page, context: BrowserContext, accessToken: string) {
         this.page = page;
         this.context = context;
+        this.accessToken = accessToken;
     }
 
     async waitForElement(locator: string) {
@@ -35,38 +39,6 @@ export abstract class Wrapper {
     }
 
 
-    // public async fetchSelector(selector: string, selectorType: SelectorType): Promise<Locator> {
-    //     let element: Locator;
-    //     this.handleCookies();
-    //     this.handleAlert();
-    //   //  const button = null;
-
-    //     switch (selectorType) {
-    //       case 'locator':
-    //         element = this.page.locator(selector);
-    //         break;
-
-    //       case 'text':
-    //         element = this.page.getByText(selector);
-    //         break;
-
-    //       case 'role':
-    //         element = this.page.getByRole('textbox', { name: selector });
-    //         break;  
-
-    //       case 'button':
-    //         element = this.page.getByRole('button', { name: selector });
-    //         break;  
-
-    //       default:
-    //         throw new Error('Unsupported selector type');
-    //     }
-
-    // this.waitForElement(selector);
-    //     this.validateElementVisibility(element);  
-    //     return element; 
-    //   }
-
     async click(locator: string) {
         try {
             await this.page.locator(locator).click();
@@ -75,12 +47,6 @@ export abstract class Wrapper {
             throw new Error(`Failed to click on element: ${locator}`, error);
         }
     }
-
-    // async type(ele:string,testData:string){ 
-    //     this.waitForElement(ele);      
-    //     await this.page.locator(ele).fill('');
-    //     await this.page.fill(ele,testData);
-    // }
 
     async typeAndEnter(locator: string, testData: string) {
         this.waitForElement(locator);
@@ -228,5 +194,37 @@ export abstract class Wrapper {
 
     async getAttributeValue(locator: string, val: string) {
         return await this.page.locator(locator).getAttribute(val);
+    }
+
+    async userCommunitySuscribeStatusViaAPI() {
+        const response = await fetch(URLConstants.getCommunityEndpoint, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to get access token`);
+        }
+        const apiData = await response.json();
+        const userIsSubscriber = apiData.data.user_is_subscriber;
+        console.log('User is subscriber:', userIsSubscriber);
+        return userIsSubscriber;
+    }
+
+    async getTopPostTitle() {
+        const response = await fetch(URLConstants.getTopPostEndpoint, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${this.accessToken}`
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to get access token`);
+        }
+        const apiData = await response.json();
+        const topPostTitle = apiData.data.children[0].data.title;
+        console.log('Top Post title is:', topPostTitle);
+        return topPostTitle;
     }
 }
