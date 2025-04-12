@@ -56,6 +56,7 @@ export class RegisterAccount extends Wrapper {
         try {
             await this.waitForElement(locator);
             await this.click(locator);
+            await this.handleBlockingMessage("Email sign-up limit reached. Try again later.");
         } catch (error) {
             const banner = await this.page.locator(Selectors.handleBannerAfterFirstClickContinueButton);
             if (await banner.isVisible()) {
@@ -78,18 +79,20 @@ export class RegisterAccount extends Wrapper {
      * @param ele - element to click
      */
     public async ClickOnSubmitButton(ele: string) {
+        await this.handleBlockingMessage("Email sent.");
         const continueBtn = await this.page.locator(ele);
         await this.waitForElement(ele);
+        await continueBtn.waitFor({ state: 'visible' });
+        await this.handleBlockingMessage("Email sign-up limit reached. Try again later.");
         await this.click(ele);
+        await this.page.waitForTimeout(10000);
         const banner = await this.page.locator(Selectors.handleBannerAfterFirstClickContinueButton);
-        if (await continueBtn.isVisible()) {
+        if (await banner.isVisible()) {
             await this.click(ele);
-            await this.page.waitForTimeout(1000);
-            if (await banner.isVisible()) {
-                const bannerText = await banner.textContent();
-                throw new Error(`Test execution stopped due to banner : ${bannerText}`);
-            }
-        } else {
+            const bannerText = (await banner.textContent())?.trim();
+            throw new Error(`Test execution stopped due to banner : ${bannerText}`);
+        }
+        else {
             console.log("No banner detected. Continuing with the test.");
         }
     }
@@ -119,17 +122,16 @@ export class RegisterAccount extends Wrapper {
     public async selectOption(quest: string, option: string) {
         switch (quest) {
             case "How do you identify?":
-                await this.page.waitForLoadState();
-                await this.page.getByRole('button', { name: `${option}` }).click();
+                await this.page.locator(Selectors.selectGender.replace("{0}", option)).waitFor({ state: 'visible' });
+                await this.page.locator(Selectors.selectGender.replace("{0}", option)).click();
                 break;
 
             case "special_popular":
+                await this.page.waitForTimeout(3000);
                 await this.page.waitForLoadState();
-                const select_Interest = this.page.locator(Selectors.selectInterest.replace("{0}", quest));
-                console.log("select_Interest :" + select_Interest);
-                const button = await select_Interest.locator('button', { hasText: `${option}` });
-                console.log(await button.textContent());
-                await button.click();
+                const select_Interest = this.page.locator(Selectors.selectInterest.replace("{0}", quest).replace("{1}", option));
+                console.log("select_Interest :" + select_Interest + option);
+                await select_Interest.click();
                 break;
 
             default:
@@ -143,6 +145,11 @@ export class RegisterAccount extends Wrapper {
      * @param expected - true/false
      */
     public async verifyContinueButtonIsDisabled(locator: string, expected: boolean) {
+        const closeToast = await this.page.locator('button', { hasText: '×' });
+
+        if (await closeToast.isVisible()) {
+            await closeToast.click();
+        }
         const result = await this.isDisabled(locator);
         await expect(result).toBe(expected);
     }
@@ -152,7 +159,9 @@ export class RegisterAccount extends Wrapper {
      */
     public async SkipEmailVerification() {
         await this.waitForElement(Selectors.skipEmail);
-        await this.click(Selectors.skipEmail);
+        await this.page.locator(Selectors.skipEmail).waitFor({ state: 'visible' });
+        await this.page.locator(Selectors.skipEmail).click({ force: true });
+        await this.handleAnyTempAlert();
     }
 
     /**

@@ -18,7 +18,8 @@ export class RedditHomePage extends Wrapper {
         this.waitForElement(Selectors.filterOption);
         this.page.locator(Selectors.filterOption).first().click({ force: true });
         await this.page.getByText("Top", { exact: true }).click();
-        await this.page.waitForSelector(Selectors.label);
+        await this.page.locator(Selectors.label).scrollIntoViewIfNeeded();
+        await this.page.locator(Selectors.pageLoad).waitFor({ state: 'visible' });
     }
 
     /**Steps to verify the selected filter option is visible on Home Page
@@ -66,6 +67,7 @@ export class RedditHomePage extends Wrapper {
     public async verifyTopPostIsLoadedAsExpected() {
         const topPostTitleViaAPI = await this.getTopPostTitle();
         this.waitForElement(Selectors.openedPostTitle);
+        await this.page.waitForLoadState();
         const title = await this.getText(Selectors.topPost);
         console.log(`Selected Post Title: ${title}`);
         if (!title) {
@@ -131,12 +133,20 @@ export class RedditHomePage extends Wrapper {
             }
             else if (status == true) {
                 {
-                    console.log("Already a member of the community.");
+                    console.warn("Already a member of the community.");
                 }
             }
         }
         catch (error) {
             console.error(`Failed to join community ${communityName}: `, error);
         }
+    }
+
+    public async logOut() {
+        await this.waitForElement(Selectors.userProfileIcon);
+        await this.click(Selectors.userProfileIcon);
+        await this.waitForElement(Selectors.logOffButton);
+        await this.click(Selectors.logOffButton);
+        await this.page.waitForSelector(Selectors.logIn);
     }
 }

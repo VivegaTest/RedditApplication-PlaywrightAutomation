@@ -5,7 +5,7 @@ import { RegisterStep } from '../Enum/RegisterStep';
 import { Selectors } from "../Selectors/Selectors";
 
 
-test('Register a new Account', async ({ RegisterNewAccount, RedditHomePage }) => {
+test('Register a new Account', async ({ RegisterNewAccount, RedditHomePage }) => { 
     test.info().annotations.push(
         { type: 'Author', description: 'Vivega S' },
         { type: 'Test Case', description: 'Register new Account - Scenario One' }
@@ -32,8 +32,8 @@ test('Register a new Account', async ({ RegisterNewAccount, RedditHomePage }) =>
     await RegisterNewAccount.verifyValidDataEnteredCheckMark(Selectors.registerUsernameCheckMark, 'visible');
     await RegisterNewAccount.verifyValidDataEnteredCheckMark(Selectors.registerPasswordCheckMark, 'visible');
     await RegisterNewAccount.ClickOnSubmitButton(Selectors.submitButton);
-    await RegisterNewAccount.selectOption("How do you identify?", "Woman");
-    await RegisterNewAccount.selectOption("special_popular", "United Kingdom");
+    await RegisterNewAccount.selectOption("How do you identify?", "FEMALE");
+    await RegisterNewAccount.selectOption("special_popular", "1");
     await RegisterNewAccount.clickContinueButton(Selectors.submitRegister);
     await RedditHomePage.verifyUserLoggedIntoRedditApplication(user);
 })

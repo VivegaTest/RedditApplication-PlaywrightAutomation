@@ -32,15 +32,14 @@ export class LoginPage extends Wrapper {
    * steps to click on Login Button and handle any exception
    */
   public async ClickOnLoginButton() {
-    const loginButton = await this.page.getByRole('button', { name: 'Log In' });
+    const loginButton = this.page.getByRole('button', { name: 'Log In' });
+    const banner = this.page.locator(Selectors.handleBannerAfterFirstClickContinueButton);
+    await this.handleAnyTempAlert();
     await loginButton.waitFor({ state: 'visible', timeout: 60000 });
     await expect(loginButton).toBeEnabled();
-    await this.page.waitForLoadState();
-    await loginButton.click();
-    const banner = await this.page.locator(Selectors.handleBannerAfterFirstClickContinueButton);
+    await loginButton.click({ force: true });
     if (await loginButton.isVisible()) {
-      await loginButton.click();
-      await this.page.waitForTimeout(1000);
+      await this.page.waitForTimeout(3000);
       if (await banner.isVisible()) {
         const bannerText = await banner.textContent();
         throw new Error(`Test execution stopped due to banner : ${bannerText}`);
@@ -57,11 +56,19 @@ export class LoginPage extends Wrapper {
   public async waitForPageLoad(expectedUrl: string): Promise<void> {
     try {
       await this.page.waitForURL((url) => url.toString().includes(expectedUrl), { timeout: 10000 });
-      await this.page.waitForLoadState('networkidle');
       await this.page.waitForTimeout(500);
     } catch (error) {
       console.error(`Failed to load URL: ${expectedUrl}, actual: ${this.page.url()}`);
       throw error;
     }
+  }
+
+  /**
+   * Steps to verify the entered data is valid or not in the Login Page
+  * @param selector - Specific field
+  * @param action - expected result
+  */
+  public async verifyValidDataEnteredCheckMark(selector: string, action: 'visible' | 'disabled') {
+    await this.verifyElementStatus(selector, action);
   }
 }

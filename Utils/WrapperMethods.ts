@@ -2,7 +2,6 @@ import { Page, BrowserContext, test, expect, Locator } from '@playwright/test';
 import { randomBytes } from 'crypto';
 import { Selectors } from "../Selectors/Selectors";
 import { URLConstants } from '../constants/URLConstants';
-import { LOADIPHLPAPI } from "dns";
 
 
 export abstract class Wrapper {
@@ -65,7 +64,7 @@ export abstract class Wrapper {
     }
 
     async loadApp(url: string) {
-        await this.page.goto(url, { waitUntil: 'load', timeout: 15000 });
+        await this.page.goto(url, { waitUntil: 'load', timeout: 20000 });
         console.log(`Navigated to: ${url}`);
     }
 
@@ -139,9 +138,11 @@ export abstract class Wrapper {
         const ele = await this.page.locator(selector);
         try {
             if (action == 'visible') {
+                await this.waitForElement(selector);
                 await expect(ele).toBeVisible();
             }
             else if (action == 'disabled') {
+                await this.waitForElement(selector);
                 await expect(ele).toBeDisabled();
             }
             else {
@@ -226,5 +227,28 @@ export abstract class Wrapper {
         const topPostTitle = apiData.data.children[0].data.title;
         console.log('Top Post title is:', topPostTitle);
         return topPostTitle;
+    }
+    async handleAnyTempAlert() {
+        const closeToast = await this.page.locator('button', { hasText: '×' });
+
+        if (await closeToast.isVisible()) {
+            await closeToast.click();
+        }
+    }
+
+    public async handleBlockingMessage(expectedText: string) {
+        const text = this.page.locator(`text="${expectedText}"`);
+        const closeBtn = this.page.locator('button:has-text("×")');
+
+        if (await text.isVisible({ timeout: 3000 })) {
+            console.warn(`Blocking toast detected: "${expectedText}"`);
+
+            if (await closeBtn.isVisible()) {
+                await closeBtn.click();
+            }
+        }
+        else {
+            console.log('No alert message');
+        }
     }
 }

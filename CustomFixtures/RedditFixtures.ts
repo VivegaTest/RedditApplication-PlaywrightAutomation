@@ -2,12 +2,11 @@ import { test as baseTest, Page, chromium, BrowserContext } from '@playwright/te
 
 import { RegisterAccount } from '../pages/RegisterPage';
 import { LoginPage } from '../pages/LoginPage';
-import { credentialConstants } from "../constants/credentialConstants";
 import { URLConstants } from '../constants/URLConstants';
 import { aiFixture } from '@zerostep/playwright';
 import { RedditHomePage } from '../pages/HomePage';
 import { apiCredential } from '../constants/APIcredentials';
-import { homedir } from 'os';
+import { Selectors } from '../Selectors/Selectors'
 
 export const test = baseTest.extend<{
     RegisterNewAccount: RegisterAccount;
@@ -51,13 +50,15 @@ export const test = baseTest.extend<{
 
         await loginPage.userNaviagtesToLoginPage(URLConstants.BaseURL);
         await loginPage.fillData(apiCredential.UserOne, apiCredential.pwd);
+        await loginPage.verifyValidDataEnteredCheckMark(Selectors.loginUserNameCheckMark, 'visible');
+        await loginPage.verifyValidDataEnteredCheckMark(Selectors.loginPasswordCheckMark, 'visible');
         await loginPage.ClickOnLoginButton();
         await loginPage.waitForPageLoad(homeURL);
         await use(loginPage);
     },
 
-    RegisterNewAccount: async ({ page, context }, use) => {
-        const registerDialog = new RegisterAccount(page, context);
+    RegisterNewAccount: async ({ page, context, accessToken }, use) => {
+        const registerDialog = new RegisterAccount(page, context, accessToken);
         await use(registerDialog);
     },
 
@@ -67,4 +68,22 @@ export const test = baseTest.extend<{
         await use(redditHome);
     },
     ...aiFixture(baseTest)
+});
+
+test.afterEach(async ({ RedditHomePage, page }) => {
+
+    try {
+        console.log("Logging Out.");
+        await RedditHomePage.logOut();
+    } catch (error) {
+        console.warn('Log out failed');
+    }
+});
+
+test.afterAll(async ({ browser }) => {
+    try {
+        await browser.close();
+    } catch (error) {
+        console.warn('Browser close failed:', error);
+    }
 });

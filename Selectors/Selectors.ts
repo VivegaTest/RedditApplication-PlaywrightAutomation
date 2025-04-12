@@ -12,10 +12,12 @@ export class Selectors {
     static registerUsernameCheckMark = "auth-flow-manager>span[slot='register'] faceplate-partial faceplate-tabpanel #register-username" + Selectors.shadowRoot;
     static registerPasswordCheckMark = "auth-flow-manager>span[slot='register'] faceplate-partial faceplate-tabpanel #register-password" + Selectors.shadowRoot;
     static verifyPage = "//h1[normalize-space()='{0}']";
+    static getPageTitle = "auth-flow-modal[slot='register_username_and_password'] >div>h1";
     static skipEmail = "button[name='skip']";
     static emailSentAlert = "text=Email sent.";
     static selectOption = "button[value='{0}']";
-    static selectInterest = 'shreddit-slotter >> #topics [data-section-name="_{0}"]>div:nth-child(2)';
+    static selectGender = "shreddit-slotter[slot-name='onboarding_gender_collection'] >> button[value='{0}']";
+    static selectInterest = 'shreddit-slotter >> #topics [data-section-name="_{0}"]>div:nth-child(2)>div:nth-child({1}) button';
     static submitRegister = 'shreddit-slotter >> [type="submit"]';
     static registerEmail = "#register-email";
     static handleBannerAfterFirstClickContinueButton = 'alert-controller >> banner-controller >> faceplate-banner >>#banner-text';
@@ -39,4 +41,6 @@ export class Selectors {
     static userNameOnProfile = "#user-drawer-content >ul [noun='profile'] .text-secondary-weak";
     static communityHeader = "#subgrid-container .masthead .flex >div .flex-col >h1";
     static joinCommunityStatus = "#subgrid-container .masthead .flex >div shreddit-subreddit-header-buttons >> faceplate-tracker shreddit-join-button >> button";
+    static logOffButton = "//span[contains(text(),'Log Out')]";
+    static logIn = "//span[contains(text(),'Log In')]";
 }
