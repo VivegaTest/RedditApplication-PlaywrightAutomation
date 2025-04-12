@@ -71,4 +71,8 @@ You can find the details - ../constants/APIcredentials.ts
 
 ../tests/
     Contains the test class
+
+../utils/
+    Call the common methods to utilize in Page class
+
     
