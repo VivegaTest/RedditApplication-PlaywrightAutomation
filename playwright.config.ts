@@ -13,7 +13,8 @@ export default defineConfig({
     use: {
         headless: false,
         screenshot: "on",
-        video: "on"
+        video: "on",
+        viewport: null
     },
     projects: [
         // {

@@ -70,13 +70,14 @@ export const test = baseTest.extend<{
     ...aiFixture(baseTest)
 });
 
-test.afterEach(async ({ RedditHomePage, page }) => {
-
-    try {
-        console.log("Logging Out.");
-        await RedditHomePage.logOut();
-    } catch (error) {
-        console.warn('Log out failed');
+test.afterEach(async ({ RedditHomePage, page }, testInfo) => {
+    if (testInfo.status === 'passed') {
+        try {
+            console.log("Logging Out.");
+            await RedditHomePage.logOut();
+        } catch (error) {
+            console.warn('Log out failed', error);
+        }
     }
 });
 

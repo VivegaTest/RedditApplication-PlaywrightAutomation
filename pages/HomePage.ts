@@ -143,8 +143,10 @@ export class RedditHomePage extends Wrapper {
     }
 
     public async logOut() {
-        await this.waitForElement(Selectors.userProfileIcon);
-        await this.click(Selectors.userProfileIcon);
+        if (await this.page.locator(Selectors.logOffButton).isHidden()) {
+            await this.waitForElement(Selectors.userProfileIcon);
+            await this.click(Selectors.userProfileIcon);
+        }
         await this.waitForElement(Selectors.logOffButton);
         await this.click(Selectors.logOffButton);
         await this.page.waitForSelector(Selectors.logIn);
