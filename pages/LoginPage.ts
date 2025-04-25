@@ -7,6 +7,10 @@ export class LoginPage extends Wrapper {
   static url = URLConstants.BaseURL;
   static homeUrl = URLConstants.HomeURL;
 
+  constructor(page: Page, context: BrowserContext, accessToken: string) {
+    super(page, context, accessToken);
+}
+
   /** Navigate to the login page by clicking url and handle any exception
    * @param url
    *  login url
@@ -68,7 +72,7 @@ export class LoginPage extends Wrapper {
   * @param selector - Specific field
   * @param action - expected result
   */
-  public async verifyValidDataEnteredCheckMark(selector: string, action: 'visible' | 'disabled') {
-    await this.verifyElementStatus(selector, action);
+  public async verifyValidDataEnteredCheckMark(fieldName:string,selector: string, action: 'visible' | 'disabled') {
+    await this.verifyElementStatus(fieldName,selector, action);
   }
 }

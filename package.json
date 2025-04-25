@@ -14,7 +14,9 @@
     "@playwright/test": "^1.51.1",
     "@zerostep/playwright": "^0.1.5",
     "dotenv": "^16.4.7",
-    "playwright": "^1.51.1"
+    "playwright": "^1.51.1",
+    "playwright-extra": "^4.3.6",
+    "playwright-extra-plugin-stealth": "^0.0.1"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",

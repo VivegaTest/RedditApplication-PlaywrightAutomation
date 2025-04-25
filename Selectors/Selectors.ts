@@ -8,7 +8,7 @@ export class Selectors {
     static submitButton = 'div > faceplate-tracker > button[type="submit"]';
     static shadowRoot = ">> label>div>span>span:nth-child(3) [icon-name='checkmark-fill']";
     static registerEmailCheckMark = "faceplate-text-input#register-email" + Selectors.shadowRoot;
-    static emailFieldHelpText = "faceplate-text-input#register-email >> faceplate-form-helper-text >>#helper-text";
+    static fieldHelpText = "faceplate-text-input#register-{0} >> faceplate-form-helper-text >>#helper-text";
     static registerUsernameCheckMark = "auth-flow-manager>span[slot='register'] faceplate-partial faceplate-tabpanel #register-username" + Selectors.shadowRoot;
     static registerPasswordCheckMark = "auth-flow-manager>span[slot='register'] faceplate-partial faceplate-tabpanel #register-password" + Selectors.shadowRoot;
     static verifyPage = "//h1[normalize-space()='{0}']";
@@ -21,7 +21,7 @@ export class Selectors {
     static submitRegister = 'shreddit-slotter >> [type="submit"]';
     static registerEmail = "#register-email";
     static handleBannerAfterFirstClickContinueButton = 'alert-controller >> banner-controller >> faceplate-banner >>#banner-text';
-
+    static toasterAlert = "alert-controller >> toaster-lite";
 
     // Login Page
     static textInputField = "input[name='{0}']";
@@ -33,8 +33,7 @@ export class Selectors {
     static topPostHref = "shreddit-feed > article:nth-child(1) [slot='title']";
     static openedPostTitle = "shreddit-post >h1";
     static pageLoad = "#main-content:nth-child(1)";
-    static label = "button[aria-label='Sort by: Top']";
-
+    static label = "button[aria-label='Sort by: {0}']";
 
     //HomePage
     static userProfileIcon = "img[alt='User Avatar']";
@@ -43,4 +42,5 @@ export class Selectors {
     static joinCommunityStatus = "#subgrid-container .masthead .flex >div shreddit-subreddit-header-buttons >> faceplate-tracker shreddit-join-button >> button";
     static logOffButton = "//span[contains(text(),'Log Out')]";
     static logIn = "//span[contains(text(),'Log In')]";
+    static dropdownList = "shreddit-sort-dropdown > div[slot='dropdown-items'] > li";
 }

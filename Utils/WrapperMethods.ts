@@ -27,7 +27,6 @@ export abstract class Wrapper {
 
     async validateElementVisibility(locator: any) {
         const element = locator;
-        console.log("element:" + element);
         await this.page.waitForLoadState('load');
         try {
             await expect(element).toBeVisible();
@@ -49,7 +48,6 @@ export abstract class Wrapper {
 
     async typeAndEnter(locator: string, testData: string) {
         this.waitForElement(locator);
-        console.log("testData" + testData);
         await this.page.locator(locator).fill('');
         await this.page.locator(locator).fill(testData);
 
@@ -113,10 +111,15 @@ export abstract class Wrapper {
     }
 
     async handleAlert() {
-        const alert = await this.page.locator('alert-controller >> toaster-lite');
+        const alert = await this.page.locator(Selectors.toasterAlert);
         if (await alert.isVisible()) {
-            await this.page.locator('alert-controller >> toaster-lite button').click();
+            await alert.locator('button').click();
         }
+
+        this.page.on('dialog', async dialog => {
+            console.log(`${dialog.message()}`);
+            await dialog.accept();
+        })
     }
 
 
@@ -134,15 +137,15 @@ export abstract class Wrapper {
         await expect(element).toBeChecked();
     }
 
-    async verifyElementStatus(selector: string, action: 'visible' | 'disabled') {
+    async verifyElementStatus(fieldName: string, selector: string, action: 'visible' | 'disabled') {
         const ele = await this.page.locator(selector);
         try {
             if (action == 'visible') {
-                await this.waitForElement(selector);
-                await expect(ele).toBeVisible();
+                await this.page.waitForTimeout(2000);
+                await expect(ele).toBeVisible(); 
             }
             else if (action == 'disabled') {
-                await this.waitForElement(selector);
+                await this.page.waitForTimeout(2000);
                 await expect(ele).toBeDisabled();
             }
             else {
@@ -152,7 +155,7 @@ export abstract class Wrapper {
         catch (error) {
             let helpText = "No help text found";
             try {
-                helpText = await this.page.locator(Selectors.emailFieldHelpText).innerText();
+                helpText = await this.page.locator(Selectors.fieldHelpText.replace("{0}", fieldName)).innerText();
             } catch (innerError) {
                 console.log(`Failed to capture hellp text ${innerError}`);
             }
@@ -197,8 +200,8 @@ export abstract class Wrapper {
         return await this.page.locator(locator).getAttribute(val);
     }
 
-    async userCommunitySuscribeStatusViaAPI() {
-        const response = await fetch(URLConstants.getCommunityEndpoint, {
+    async userCommunitySuscribeStatusViaAPI(communityName: string) {
+        const response = await fetch(URLConstants.getCommunityEndpoint.replace("{0}", communityName), {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${this.accessToken}`
@@ -213,8 +216,8 @@ export abstract class Wrapper {
         return userIsSubscriber;
     }
 
-    async getTopPostTitle() {
-        const response = await fetch(URLConstants.getTopPostEndpoint, {
+    async getTopPostTitle(option: string) {
+        const response = await fetch(URLConstants.getTopPostEndpoint.replace("{0}", option), {
             method: 'GET',
             headers: {
                 Authorization: `Bearer ${this.accessToken}`
@@ -250,5 +253,9 @@ export abstract class Wrapper {
         else {
             console.log('No alert message');
         }
+    }
+
+    public async captureScreenshot() {
+        await this.page.screenshot({ path: 'Screenshot.png', fullPage: true });
     }
 }

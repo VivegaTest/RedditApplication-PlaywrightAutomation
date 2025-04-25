@@ -20,8 +20,8 @@ jobs:
     - name: Run Playwright tests
       run: |
           npx playwright test || (
-            echo "❌ Playwright tests failed."
-            echo "📄 Collecting debug logs..."
+            echo " Playwright tests failed."
+            echo " Collecting debug logs..."
             cat playwright-report/index.html || echo "No HTML report found."
             exit 1
           )

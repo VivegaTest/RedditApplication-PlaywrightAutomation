@@ -8,6 +8,10 @@ import { URLConstants } from "../constants/URLConstants";
 export class RegisterAccount extends Wrapper {
     static url = URLConstants.BaseURL;
 
+    constructor(page: Page, context: BrowserContext, accessToken: string) {
+        super(page, context, accessToken);
+    }
+
     /** steps to generate random string to set email and pwd */
     public async generateRandomString(): Promise<string> {
         return await this.getRandomString();
@@ -109,9 +113,10 @@ export class RegisterAccount extends Wrapper {
      * Steps to verify the entered data is valid or not in the Register Page
     * @param selector - Specific field
     * @param action - expected result
+    * @param fieldName - name of the field
     */
-    public async verifyValidDataEnteredCheckMark(selector: string, action: 'visible' | 'disabled') {
-        await this.verifyElementStatus(selector, action);
+    public async verifyValidDataEnteredCheckMark(fieldName: string, selector: string, action: 'visible' | 'disabled') {
+        await this.verifyElementStatus(fieldName, selector, action);
     }
 
     /**
@@ -159,7 +164,7 @@ export class RegisterAccount extends Wrapper {
      */
     public async SkipEmailVerification() {
         await this.waitForElement(Selectors.skipEmail);
-        await this.page.locator(Selectors.skipEmail).waitFor({ state: 'visible' });
+        await this.page.locator(Selectors.skipEmail).waitFor({ state: 'attached' });
         await this.page.locator(Selectors.skipEmail).click({ force: true });
         await this.handleAnyTempAlert();
     }

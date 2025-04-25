@@ -3,6 +3,6 @@ export enum URLConstants {
     HomeURL = "https://www.reddit.com",
     NaviagationURL = "https://www.reddit.com/",
     oauthURL = "https://oauth.reddit.com",
-    getCommunityEndpoint = oauthURL + "/r/EyeBleach/about",
-    getTopPostEndpoint = oauthURL + "/top?after&before&count&limit&show&sr_detail",
+    getCommunityEndpoint = oauthURL + "/r/{0}/about",
+    getTopPostEndpoint = oauthURL + "/{0}",
 }

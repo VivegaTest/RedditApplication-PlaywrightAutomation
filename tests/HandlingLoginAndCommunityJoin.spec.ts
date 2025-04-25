@@ -11,8 +11,8 @@ test('Select top post on Reddit Home after login', async ({ RedditHomePage, Logi
 
     await RedditHomePage.applyFilterToShow("Top");
     await RedditHomePage.verifyPageLoadedBasedOnFilterOption("top");
-    await RedditHomePage.verifyTopPostIsLoadedAsExpected();
-    await RedditHomePage.selectTopPostURLAndWaitsForLoad();
+    await RedditHomePage.verifyTopPostIsLoadedAsExpected("top");
+    await RedditHomePage.selectTopPostURLAndWaitsForLoad("top");
 });
 
 test('Join a new Community', async ({ RedditHomePage, LoginPage, accessToken }) => {

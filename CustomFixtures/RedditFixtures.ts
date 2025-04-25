@@ -6,7 +6,11 @@ import { URLConstants } from '../constants/URLConstants';
 import { aiFixture } from '@zerostep/playwright';
 import { RedditHomePage } from '../pages/HomePage';
 import { apiCredential } from '../constants/APIcredentials';
-import { Selectors } from '../Selectors/Selectors'
+import { Selectors } from '../Selectors/Selectors';
+// import playwrightExtra from 'playwright-extra';
+// import stealthPlugin from 'playwright-extra-plugin-stealth';
+
+// playwrightExtra.use(stealthPlugin());
 
 export const test = baseTest.extend<{
     RegisterNewAccount: RegisterAccount;
@@ -50,8 +54,8 @@ export const test = baseTest.extend<{
 
         await loginPage.userNaviagtesToLoginPage(URLConstants.BaseURL);
         await loginPage.fillData(apiCredential.UserOne, apiCredential.pwd);
-        await loginPage.verifyValidDataEnteredCheckMark(Selectors.loginUserNameCheckMark, 'visible');
-        await loginPage.verifyValidDataEnteredCheckMark(Selectors.loginPasswordCheckMark, 'visible');
+        await loginPage.verifyValidDataEnteredCheckMark("username", Selectors.loginUserNameCheckMark, 'visible');
+        await loginPage.verifyValidDataEnteredCheckMark("password", Selectors.loginPasswordCheckMark, 'visible');
         await loginPage.ClickOnLoginButton();
         await loginPage.waitForPageLoad(homeURL);
         await use(loginPage);

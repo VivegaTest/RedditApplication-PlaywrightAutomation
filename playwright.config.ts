@@ -12,8 +12,8 @@ export default defineConfig({
     reporter: [['html', { open: "always" }]],
     use: {
         headless: false,
-        screenshot: "on",
-        video: "on",
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
         viewport: null
     },
     projects: [

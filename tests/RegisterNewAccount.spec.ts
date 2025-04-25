@@ -5,7 +5,7 @@ import { RegisterStep } from '../Enum/RegisterStep';
 import { Selectors } from "../Selectors/Selectors";
 
 
-test('Register a new Account', async ({ RegisterNewAccount, RedditHomePage }) => { 
+test('Register a new Account', async ({ RegisterNewAccount, RedditHomePage }) => {
     test.info().annotations.push(
         { type: 'Author', description: 'Vivega S' },
         { type: 'Test Case', description: 'Register new Account - Scenario One' }
@@ -20,7 +20,7 @@ test('Register a new Account', async ({ RegisterNewAccount, RedditHomePage }) =>
 
     await RegisterNewAccount.clickOnSignUpLink();
     await RegisterNewAccount.fillData(RegisterStep.Email, Email);
-    await RegisterNewAccount.verifyValidDataEnteredCheckMark(Selectors.registerEmailCheckMark, 'visible');
+    await RegisterNewAccount.verifyValidDataEnteredCheckMark(RegisterStep.Email, Selectors.registerEmailCheckMark, 'visible');
     await RegisterNewAccount.clickContinueButton(Selectors.continueButton);
     await RegisterNewAccount.waitForPageLoad("Verify your email");
     await RegisterNewAccount.verifyContinueButtonIsDisabled(Selectors.submitButton, true);
@@ -29,8 +29,8 @@ test('Register a new Account', async ({ RegisterNewAccount, RedditHomePage }) =>
     await RegisterNewAccount.verifyContinueButtonIsDisabled(Selectors.submitButton, true);
     await RegisterNewAccount.fillData(RegisterStep.Username, user);
     await RegisterNewAccount.fillData(RegisterStep.Password, password);
-    await RegisterNewAccount.verifyValidDataEnteredCheckMark(Selectors.registerUsernameCheckMark, 'visible');
-    await RegisterNewAccount.verifyValidDataEnteredCheckMark(Selectors.registerPasswordCheckMark, 'visible');
+    await RegisterNewAccount.verifyValidDataEnteredCheckMark("username", Selectors.registerUsernameCheckMark, 'visible');
+    await RegisterNewAccount.verifyValidDataEnteredCheckMark(RegisterStep.Password, Selectors.registerPasswordCheckMark, 'visible');
     await RegisterNewAccount.ClickOnSubmitButton(Selectors.submitButton);
     await RegisterNewAccount.selectOption("How do you identify?", "FEMALE");
     await RegisterNewAccount.selectOption("special_popular", "1");
